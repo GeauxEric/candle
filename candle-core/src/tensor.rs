@@ -272,6 +272,15 @@ impl Tensor {
         Self::rand_impl(lo, up, s, device, false)
     }
 
+    pub fn randint<S: Into<Shape>, T: crate::IntDType>(
+        lo: T,
+        up: T,
+        s: S,
+        device: &Device,
+    ) -> Result<Self> {
+        Self::rand_impl(lo, up, s, device, false)
+    }
+
     pub fn rand_like(&self, lo: f64, up: f64) -> Result<Self> {
         Tensor::rand_f64_impl(lo, up, self.shape(), self.dtype(), self.device(), false)
     }

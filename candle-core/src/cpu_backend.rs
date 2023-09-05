@@ -2372,7 +2372,16 @@ impl BackendDevice for CpuDevice {
         let elem_count = shape.elem_count();
         let mut rng = rand::thread_rng();
         match dtype {
-            DType::U8 | DType::U32 | DType::I64 => {
+            DType::U32 => {
+                let mut data = Vec::with_capacity(elem_count);
+                let uniform =
+                    rand::distributions::Uniform::new(min, max);
+                for _i in 0..elem_count {
+                    data.push(rng.sample::<u32, _>(uniform))
+                }
+                Ok(CpuStorage::U32(data))
+            }
+            DType::U8 | DType::I64 => {
                 Err(Error::UnsupportedDTypeForOp(dtype, "rand_uniform").bt())
             }
             DType::BF16 => {
